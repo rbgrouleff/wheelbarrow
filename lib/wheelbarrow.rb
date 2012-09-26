@@ -1,6 +1,13 @@
 require "wheelbarrow/version"
 
 module Wheelbarrow
-  # Your code goes here...
+  # Deployment steps:
+  #
+  # Git pull from repo to deploy dir
+  #
+  # rake db:migrate
+  #
+  # asset precompiling
+  #
+  # restart unicorn
 end
-
