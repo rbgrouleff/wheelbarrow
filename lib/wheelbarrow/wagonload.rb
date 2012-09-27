@@ -13,6 +13,14 @@ module Wheelbarrow
       end
     end
 
+    def bundle_install
+      Dir.chdir @deployment_dir do
+        # TODO Please make this better!
+        puts `bundle install && rbenv rehash`
+        raise "Bundle install failed" unless $?.exitstatus == 0
+      end
+    end
+
     # rake db:migrate
     def run_migrations
       Dir.chdir @deployment_dir do
