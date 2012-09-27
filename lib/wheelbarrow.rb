@@ -1,13 +1,8 @@
 require "wheelbarrow/version"
+require "wheelbarrow/wagonload"
 
 module Wheelbarrow
-  # Deployment steps:
-  #
-  # Git pull from repo to deploy dir
-  #
-  # rake db:migrate
-  #
-  # asset precompiling
-  #
-  # restart unicorn
 end
+
+puts `ls`
+puts $?.exitstatus
