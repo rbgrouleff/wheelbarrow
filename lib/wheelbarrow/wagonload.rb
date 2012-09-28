@@ -15,8 +15,7 @@ module Wheelbarrow
 
     def bundle_install
       Dir.chdir @deployment_dir do
-        # TODO Please make this better!
-        puts `bundle install && rbenv rehash`
+        puts `bundle install --deployment --without development test && rbenv rehash`
         raise "Bundle install failed" unless $?.exitstatus == 0
       end
     end
