@@ -1,28 +1,28 @@
 module Wheelbarrow
   class Wagonload
-    def initialize(deployment_dir, repo)
-      @deployment_dir = deployment_dir
+    def initialize(app_dir, repo)
+      @app_dir = app_dir
       @repo = repo
     end
 
     # Git pull from repo to deploy dir
     def pull
-      Dir.chdir @deployment_dir do
+      Dir.chdir @app_dir do
         `git pull #{@repo} master`
         raise "Deployment of code failed" unless $?.exitstatus == 0
       end
     end
 
     def bundle_install
-      Dir.chdir @deployment_dir do
-        puts `bundle install --deployment --without development test && rbenv rehash`
+      Dir.chdir @app_dir do
+        puts `bundle install --without development test && rbenv rehash`
         raise "Bundle install failed" unless $?.exitstatus == 0
       end
     end
 
     # rake db:migrate
     def run_migrations
-      Dir.chdir @deployment_dir do
+      Dir.chdir @app_dir do
         puts `RAILS_ENV=production rake db:migrate`
         raise "Migrating the database failed" unless $?.exitstatus == 0
       end
@@ -30,7 +30,7 @@ module Wheelbarrow
 
     # asset precompiling
     def assets_precompiling
-      Dir.chdir @deployment_dir do
+      Dir.chdir @app_dir do
         puts `RAILS_ENV=production rake assets:precompile`
         raise "Assets precompiling failed" unless $?.exitstatus == 0
       end
@@ -38,6 +38,11 @@ module Wheelbarrow
 
     # restart unicorn
     def restart_unicorn
+      Dir.chdir @app_dir do
+        pid = File.read(File.join('tmp', 'pids', 'unicorn.pid')).strip
+        `kill -s HUP #{pid}`
+        raise "Restart of unicorn failed" unless $?.exitstatus == 0
+      end
     end
   end
 end
