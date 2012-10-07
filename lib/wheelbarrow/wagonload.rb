@@ -1,6 +1,6 @@
 module Wheelbarrow
   class Wagonload
-    def initialize(app_dir, repo)
+    def initialize app_dir, repo
       @app_dir = app_dir
       @repo = repo
     end
