@@ -1,5 +1,7 @@
 require "wheelbarrow/version"
 require "wheelbarrow/wagonload"
+require "wheelbarrow/command"
+require "wheelbarrow/commands/test"
 
 module Wheelbarrow
   def self.deploy app_dir, repo
@@ -12,7 +14,5 @@ module Wheelbarrow
   end
 end
 
-
-
-puts `ls`
-puts $?.exitstatus
+cmd = Wheelbarrow.Command(ARGV[0], ARGV.drop(1))
+cmd.execute if cmd
